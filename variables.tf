@@ -98,8 +98,3 @@ variable "members" {
   type    = list(string)
   default = []
 }
-
-variable "storage_object_admin" {
-  type    = bool
-  default = false
-}

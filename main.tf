@@ -11,10 +11,10 @@ resource "google_composer_environment" "composerv3" {
         content {
           network    = lookup(node_config.value, "network", null)
           subnetwork = lookup(node_config.value, "subnetwork", null)
-          #composer_network_attachment = lookup(node_config.template, "composer_network_attachment", null)
+          composer_network_attachment = lookup(node_config.value, "composer_network_attachment", null)
           service_account = lookup(node_config.value, "service_account", null)
           tags            = lookup(node_config.value, "tags", null)
-          #composer_internal_ipv4_cidr_block = lookup(node_config.template, "composer_internal_ipv4_cidr_block", null)
+          composer_internal_ipv4_cidr_block = lookup(node_config.value, "composer_internal_ipv4_cidr_block", null)
         }
       }
       dynamic "software_config" {
@@ -30,11 +30,11 @@ resource "google_composer_environment" "composerv3" {
               enabled = cloud_data_lineage_integration.value.enabled
             }
           }
-          #web_server_plugins_mode = lookup(software_config.template, "web_server_plugins_mode", null)            
+          web_server_plugins_mode = lookup(software_config.value, "web_server_plugins_mode", null)            
         }
       }
-      #enable_private_environment = lookup(config.value, "enable_private_environment", null)
-      #enable_private_builds_only = lookup(config.value, "enable_private_builds_only", null)
+      enable_private_environment = lookup(config.value, "enable_private_environment", null)
+      enable_private_builds_only = lookup(config.value, "enable_private_builds_only", null)
       dynamic "encryption_config" {
         for_each = config.value.encryption_config != null ? [config.value.encryption_config] : []
         content {
@@ -87,8 +87,6 @@ resource "google_composer_environment" "composerv3" {
               max_count  = lookup(worker.value, "max_count", null)
             }
           }
-          # beta
-          /*
           dynamic "dag_processor" {
             for_each = workloads_config.value.dag_processor != null ? [workloads_config.value.dag_processor] : []
             content {
@@ -97,8 +95,7 @@ resource "google_composer_environment" "composerv3" {
               storage_gb = lookup(dag_processor.value, "storage_gb", null)
               count      = lookup(dag_processor.value, "count", null)
             }
-          }
-          */
+          }          
         }
       }
       environment_size = lookup(config.value, "environment_size", null)
@@ -131,13 +128,5 @@ resource "google_project_iam_binding" "CustomComposerAdministrator" {
   count      = length(var.members) == 0 ? 0 : 1
   project    = var.project
   role       = "organizations/225850268505/roles/CustomComposerAdministrator"
-  members    = var.members
-}
-
-resource "google_project_iam_binding" "StorageObjectAdmin" {
-  depends_on = [google_composer_environment.composerv3]
-  count      = var.storage_object_admin == true ? 1 : 0
-  project    = var.project
-  role       = "roles/storage.objectAdmin"
   members    = var.members
 }

@@ -9,7 +9,7 @@ Module developed to standardize the creation of Composer V3.
 
 | Module Version | Terraform Version | Google Version     |
 |----------------|-------------------| ------------------ |
-| v1.0.0         | v1.9.8            | 6.10.0             |
+| v1.0.0         | v1.10.2           | 6.13.0             |
 
 ## Specifying a version
 
@@ -56,8 +56,7 @@ module "composer-env" {
   project = "project_id"
   name = "composer-env"
   region = "<southamerica-east1>"
-  members = ["group:GRP_GCP-SYSTEM-PRD@timbrasil.com.br"]
-  storage_object_admin = true
+  members = ["group:GRP_GCP-SYSTEM-PRD@timbrasil.com.br"]  
   config = {
     software_config = {
       image_version = "composer-3-airflow-2"
@@ -95,7 +94,6 @@ output "id" {
 | project | The ID of the project in which the resource belongs. If it is not provided, the provider project is used | `string` | n/a | No |
 | storage_config | Configuration options for storage used by Composer environment. Structure is documented [here](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/composer_environment#argument-reference---cloud-composer-3) | `object({})` | n/a | No |
 | members | list of azure AD groups that will use the resource | `list(string)` | n/a | No |
-| storage_object_admin | Should Cloud Scheduler Admin be granted?  | `bool` | `false` | No |
 
 # Object variables for blocks
 
