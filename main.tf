@@ -123,10 +123,10 @@ resource "google_composer_environment" "composerv3" {
   }
 }
 
-resource "google_project_iam_binding" "CustomComposerAdministrator" {
+resource "google_project_iam_member" "CustomComposerAdministrator" {
   depends_on = [google_composer_environment.composerv3]
-  count      = length(var.members) == 0 ? 0 : 1
+  for_each   = { for member in var.members : member => member }
   project    = var.project
   role       = "organizations/225850268505/roles/CustomComposerAdministrator"
-  members    = var.members
+  member     = each.value
 }

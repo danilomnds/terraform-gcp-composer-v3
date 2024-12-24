@@ -9,7 +9,7 @@ Module developed to standardize the creation of Composer V3.
 
 | Module Version | Terraform Version | Google Version     |
 |----------------|-------------------| ------------------ |
-| v1.0.0         | v1.10.2           | 6.13.0             |
+| v1.0.0         | v1.10.3           | 6.14.1             |
 
 ## Specifying a version
 
